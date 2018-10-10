@@ -1,0 +1,32 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:aop="http://www.springframework.org/schema/aop"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+
+<aop:aspectj-autoproxy/>
+
+<bean id="calculatorLoggingAspect" class="CalculatorLoggingAspect">
+</bean>
+<aop:config>
+	<aop:aspect id="loggingAspect" ref="calculatorLoggingAspect">
+	<aop:pointcut id="loggingOperation" expression=
+	"within(ArithmeticCalculatorImpl)" />
+	
+	<aop:before pointcut-ref="loggingOperation" method="logBefore"/>
+	<aop:after pointcut-ref="loggingOperation" method="logAfter"/>
+	<aop:after-returning pointcut-ref="loggingOperation" method="logAfterReturning"/>
+	<aop:after-throwing pointcut-ref="loggingOperation" method="logAfterThrowing"/>
+	<aop:around pointcut-ref="loggingOperation" method="logAround"/>  
+	</aop:aspect>
+	
+</aop:config>
+
+<bean id="arithmeticCalculatorImpl" class="ArithmeticCalculatorImpl">
+</bean>
+<bean id="unitCalculatorImpl" class="UnitCalculatorImpl">
+</bean>
+
+</beans>
